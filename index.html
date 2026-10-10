@@ -1652,20 +1652,55 @@
         </section>
 
         <section id="adminAssignments" class="admin-section hidden">
-            <div class="admin-panel">
-                <div class="admin-panel-heading"><div><h2>Assignment Overview</h2><p>Example assignment activity across courses.</p></div></div>
-                <div class="admin-table-wrap">
-                    <table class="admin-table">
-                        <thead><tr><th>Assignment</th><th>Course</th><th>Due</th><th>Status</th></tr></thead>
-                        <tbody id="adminAssignmentTable">
-                            <tr><td>Java OOP Assignment</td><td>Java Programming</td><td>Tomorrow</td><td><span class="admin-status pending">Pending</span></td></tr>
-                            <tr><td>Build a Landing Page</td><td>Web Development</td><td>In 3 days</td><td><span class="admin-status pending">Pending</span></td></tr>
-                            <tr><td>SQL Database Project</td><td>SQL &amp; Database</td><td>In 7 days</td><td><span class="admin-status">Open</span></td></tr>
-                        </tbody>
-                    </table>
-                </div>
+    <div class="admin-panel">
+        <div class="admin-panel-heading">
+            <div>
+                <h2>Assignment Overview</h2>
+                <p>Manage and grade assignments across courses.</p>
             </div>
-        </section>
+        </div>
+
+        <div class="admin-table-wrap">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Assignment</th>
+                        <th>Course</th>
+                        <th>Due</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody id="adminAssignmentTable">
+                    <tr>
+                        <td>Java OOP Assignment</td>
+                        <td>Java Programming</td>
+                        <td>Tomorrow</td>
+                        <td><span class="admin-status pending">Pending</span></td>
+                        <td><button onclick="gradeAssignment(this)">Grade</button></td>
+                    </tr>
+
+                    <tr>
+                        <td>Build a Landing Page</td>
+                        <td>Web Development</td>
+                        <td>In 3 days</td>
+                        <td><span class="admin-status pending">Pending</span></td>
+                        <td><button onclick="gradeAssignment(this)">Grade</button></td>
+                    </tr>
+
+                    <tr>
+                        <td>SQL Database Project</td>
+                        <td>SQL &amp; Database</td>
+                        <td>In 7 days</td>
+                        <td><span class="admin-status pending">Pending</span></td>
+                        <td><button onclick="gradeAssignment(this)">Grade</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
 
         <section id="adminProfile" class="admin-section hidden">
             <div class="admin-panel admin-profile-panel">

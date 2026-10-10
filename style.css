@@ -2306,3 +2306,20 @@ body.dark .admin-quick-actions button {
     }
 }
 
+.admin-table button {
+    background: #4f46e5;
+    color: white;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.admin-table button:hover {
+    background: #3730a3;
+}
+
+.admin-table button:disabled {
+    background: green;
+    cursor: default;
+}

@@ -76,11 +76,9 @@ function loginAsAdmin(name, email) {
         adminProfileEmail.textContent = email;
     }
 
-    // Hide login page and student desktop
     hideElement("loginPage");
     hideElement("app");
 
-    // Display administrator desktop
     showElement("adminApp");
 
     showAdminSection("adminDashboard");
@@ -114,11 +112,9 @@ function loginAsStudent(name, email) {
         profileEmail.textContent = email;
     }
 
-    // Hide login page and administrator desktop
     hideElement("loginPage");
     hideElement("adminApp");
 
-    // Display student desktop
     showElement("app");
 
     showSectionById("dashboard");
@@ -439,7 +435,7 @@ function searchCourses() {
 
 
 /* =====================================================
-   12. OPEN COURSE
+   12. OPEN COURSE WITH TUTORIALS
 ===================================================== */
 
 function openCourse(courseName) {
@@ -470,7 +466,7 @@ function openCourse(courseName) {
         "Advanced Topics"
     ];
 
-    // Tutorial links for each course
+    // Tutorial links for all supported courses
     const courseLinks = {
         java: {
             introduction:
@@ -514,6 +510,30 @@ function openCourse(courseName) {
                 "https://www.geeksforgeeks.org/dbms/",
             advanced:
                 "https://www.geeksforgeeks.org/dbms/"
+        },
+
+        // NEW: Python Programming tutorials
+        python: {
+            introduction:
+                "https://www.w3schools.com/python/",
+            fundamentals:
+                "https://www.geeksforgeeks.org/python/python-programming-language-tutorial/",
+            practical:
+                "https://docs.python.org/3/tutorial/",
+            advanced:
+                "https://www.programiz.com/python-programming"
+        },
+
+        // NEW: Artificial Intelligence and Machine Learning tutorials
+        ai: {
+            introduction:
+                "https://www.ibm.com/think/topics/artificial-intelligence",
+            fundamentals:
+                "https://www.w3schools.com/ai/",
+            practical:
+                "https://scikit-learn.org/stable/tutorial/index.html",
+            advanced:
+                "https://www.tensorflow.org/tutorials"
         }
     };
 
@@ -533,6 +553,17 @@ function openCourse(courseName) {
 
     } else if (courseNameLower.includes("database")) {
         selectedCourse = courseLinks.database;
+
+    } else if (courseNameLower.includes("python")) {
+        selectedCourse = courseLinks.python;
+
+    } else if (
+        courseNameLower.includes("artificial intelligence") ||
+        courseNameLower.includes("machine learning") ||
+        courseNameLower.includes("ai/ml") ||
+        courseNameLower === "ai"
+    ) {
+        selectedCourse = courseLinks.ai;
     }
 
     // Create lesson buttons
@@ -593,7 +624,6 @@ function closeModal() {
         modal.classList.add("hidden");
     }
 }
-
 
 
 /* =====================================================
@@ -860,21 +890,17 @@ function logout() {
         return;
     }
 
-    // Hide both desktops
     hideElement("app");
     hideElement("adminApp");
 
-    // Show login page
     showElement("loginPage");
 
-    // Reset login form
     const loginForm = document.getElementById("loginForm");
 
     if (loginForm) {
         loginForm.reset();
     }
 
-    // Clear the current role, but retain saved display details
     localStorage.removeItem("currentRole");
 
     const error = document.getElementById("loginError");
@@ -910,8 +936,6 @@ function loadSavedUser() {
         setText("adminProfileEmail", adminEmail || "");
     }
 
-    // Always start at the login page after loading.
-    // Do not automatically restore an administrator session.
     hideElement("app");
     hideElement("adminApp");
     showElement("loginPage");
@@ -946,3 +970,70 @@ function setText(id, value) {
         document.body.classList.add("dark");
     }
 })();
+
+
+/* =====================================================
+   26. GRADE ASSIGNMENT
+===================================================== */
+
+function gradeAssignment(button) {
+    const row = button.closest("tr");
+
+    if (!row) {
+        return;
+    }
+
+    const assignment = row.cells[0].textContent;
+    const course = row.cells[1].textContent;
+
+    const marks = prompt(
+        `Enter marks for ${assignment} (out of 100):`
+    );
+
+    if (marks === null || marks.trim() === "") {
+        return;
+    }
+
+    const score = Number(marks);
+
+    if (!Number.isFinite(score) || score < 0 || score > 100) {
+        alert("Enter valid marks between 0 and 100.");
+        return;
+    }
+
+    row.cells[3].innerHTML =
+        `<span class="admin-status">${score}/100 - Graded</span>`;
+
+    button.textContent = "Graded ✓";
+    button.disabled = true;
+
+    const table = document.getElementById("adminAssignmentTable");
+
+    if (table) {
+        localStorage.setItem(
+            "assignmentGrades",
+            table.innerHTML
+        );
+    }
+
+    alert(
+        `You have graded the course successfully!\n\n` +
+        `Course: ${course}\n` +
+        `Assignment: ${assignment}\n` +
+        `Marks: ${score}/100`
+    );
+}
+
+
+/* =====================================================
+   27. RESTORE SAVED ASSIGNMENT GRADES
+===================================================== */
+
+document.addEventListener("DOMContentLoaded", function () {
+    const savedGrades = localStorage.getItem("assignmentGrades");
+    const table = document.getElementById("adminAssignmentTable");
+
+    if (savedGrades && table) {
+        table.innerHTML = savedGrades;
+    }
+});
